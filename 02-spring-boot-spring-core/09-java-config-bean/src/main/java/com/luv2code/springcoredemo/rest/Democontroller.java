@@ -11,9 +11,11 @@ public class Democontroller {
     // define a private field for the dependency
     private Coach myCoach;
 
+
     // define constructor for dependency injection
     @Autowired
-    public Democontroller(Coach theCoach) {
+    public Democontroller(@Qualifier("aquatic") Coach theCoach) {
+        System.out.println("In constructor: " + getClass().getSimpleName());
         myCoach = theCoach;
     }
 
@@ -21,4 +23,6 @@ public class Democontroller {
     public String getDailyWorkout() {
         return myCoach.getDailyWorkout();
     }
+
+
 }
