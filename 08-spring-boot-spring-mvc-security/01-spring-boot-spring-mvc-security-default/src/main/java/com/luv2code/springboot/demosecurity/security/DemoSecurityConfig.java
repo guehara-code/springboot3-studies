@@ -27,7 +27,7 @@ public class DemoSecurityConfig {
                 .build();
 
         UserDetails susan = User.builder()
-                .username("susanh")
+                .username("susan")
                 .password("{noop}test123")
                 .roles("EMPLOYEE", "MANAGER", "ADMIN")
                 .build();
@@ -41,7 +41,10 @@ public class DemoSecurityConfig {
 
         http.authorizeHttpRequests(configurer ->
                     configurer
-                        .anyRequest().authenticated()
+                            .requestMatchers("/").hasRole("EMPLOYEE")
+                            .requestMatchers("/leaders/**").hasRole("MANAGER")
+                            .requestMatchers("/systems/**").hasRole("ADMIN")
+                            .anyRequest().authenticated()
                 )
                 .formLogin(form ->
                         form
