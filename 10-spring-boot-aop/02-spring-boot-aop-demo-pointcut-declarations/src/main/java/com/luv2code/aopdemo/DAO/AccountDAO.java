@@ -2,7 +2,12 @@ package com.luv2code.aopdemo.DAO;
 
 import com.luv2code.aopdemo.Account;
 
+import java.util.List;
+
 public interface AccountDAO {
+
+    // add a new method: findAccounts
+    List<Account> findAccounts();
 
     void addAccount(Account theAccount, boolean vipFlag);
 
