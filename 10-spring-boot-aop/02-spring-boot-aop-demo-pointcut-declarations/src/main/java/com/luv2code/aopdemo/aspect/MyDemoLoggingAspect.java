@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Before;
 //import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.aspectj.weaver.reflect.JoinPointMatchImpl;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,28 @@ public class MyDemoLoggingAspect {
 
         // print out the results of the method call
         System.out.println("\n=====>>> result is: " + result);
+
+        // let's port-process the data ... let's modify it
+
+        // convert the account names to uppercase
+        convertAccountNamesToUpperCase(result);
+
+        System.out.println("\n=====>>> result is: " + result);
+
+    }
+
+    private void convertAccountNamesToUpperCase(List<Account> result) {
+
+        // loop through accounts
+
+        for (Account tempAccount : result) {
+
+            // get uppercase version of name
+            String theUpperName = tempAccount.getName().toUpperCase();
+
+            // update the name on the account
+            tempAccount.setName(theUpperName);
+        }
 
     }
 
