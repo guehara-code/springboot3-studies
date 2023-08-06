@@ -2,10 +2,7 @@ package com.luv2code.aopdemo.aspect;
 
 import com.luv2code.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.*;
 //import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.aspectj.weaver.reflect.JoinPointMatchImpl;
@@ -21,13 +18,21 @@ import java.util.List;
 @Order(2)
 public class MyDemoLoggingAspect {
 
+    @After("execution(* com.luv2code.aopdemo.DAO.AccountDAO.findAccounts(..))")
+    public void afterFinallyFindAccountsAdvice(JoinPoint theJointPoint) {
+
+        // print out which method we are advising on
+        String method = theJointPoint.getSignature().toShortString();
+        System.out.println("\n=====>>> Executing @After (finally) on method: " + method);
+    }
+
     @AfterThrowing(
             pointcut = "execution(* com.luv2code.aopdemo.DAO.AccountDAO.findAccounts(..))",
             throwing = "theExc")
     public void afterTrowingFindAccountsAdvice(
         JoinPoint theJointPoint, Throwable theExc) {
 
-        //print out which method we are advising on
+        // print out which method we are advising on
         String method = theJointPoint.getSignature().toShortString();
         System.out.println("\n=====>>> Executing @AfterThrowing on method: " + method);
 
