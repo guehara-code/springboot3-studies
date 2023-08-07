@@ -2,6 +2,7 @@ package com.luv2code.aopdemo.aspect;
 
 import com.luv2code.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 //import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -17,6 +18,41 @@ import java.util.List;
 @Component
 @Order(2)
 public class MyDemoLoggingAspect {
+
+    @Around("execution(* com.luv2code.aopdemo.service.*.getFortune(..))")
+    public Object aroundGetFortune (
+            ProceedingJoinPoint theProceedingJointPoint) throws Throwable {
+
+        // print out method we are advising on
+        String method = theProceedingJointPoint.getSignature().toShortString();
+        System.out.println("\n=====>>> Executing @Around on method: " + method);
+
+        // get begin timestamp
+        long begin = System.currentTimeMillis();
+
+        // now, let's execute the method
+        Object result = "0";
+
+        try {
+            result = theProceedingJointPoint.proceed();
+        } catch (Exception exc) {
+            // log the exception
+            System.out.println(exc.getMessage());
+
+           // rethrow exception
+            throw exc;
+        }
+
+        // get end timestamp
+        long end = System.currentTimeMillis();
+
+        // compute duration and display it
+        long duration = end - begin;
+        System.out.println("\n=====>>> Duration: " + duration / 1000.0 + " seconds");
+
+        return result;
+
+    }
 
     @After("execution(* com.luv2code.aopdemo.DAO.AccountDAO.findAccounts(..))")
     public void afterFinallyFindAccountsAdvice(JoinPoint theJointPoint) {
